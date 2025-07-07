@@ -1,116 +1,94 @@
-import anime from 'animejs';
+/* global anime */
 
-// Wrap every letter in a span
-const textWrapper = document.querySelector('.title');
-textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
+// --- Particle Trail Animation ---
 
-const letters = document.querySelectorAll('.title .letter');
-
-document.addEventListener('mousemove', (e) => {
-  letters.forEach((letter) => {
-    const rect = letter.getBoundingClientRect();
-    const letterX = rect.left + rect.width / 2;
-    const letterY = rect.top + rect.height / 2;
-
-    const distance = Math.sqrt(
-      Math.pow(e.clientX - letterX, 2) + Math.pow(e.clientY - letterY, 2)
-    );
-
-    const maxDistance = 150; // マウスからの影響範囲
-    const intensity = Math.max(0, 1 - distance / maxDistance);
-
-    anime({
-      targets: letter,
-      color: intensity > 0.1 ? '#fff' : 'transparent',
-      textShadow: intensity > 0.1 ? `0 0 ${intensity * 15}px #fff, 0 0 ${intensity * 30}px #0ff` : 'none',
-      scale: 1 + intensity * 0.2,
-      duration: 200,
-      easing: 'easeOutQuad',
-    });
-  });
-});
-
-// Background animation
-const canvas = document.getElementById('bg-canvas');
+const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
-let width = window.innerWidth;
-let height = window.innerHeight;
-canvas.width = width;
-canvas.height = height;
+let width, height, particles;
 
-let mouse = {
-  x: width / 2,
-  y: height / 2
-};
+const particleCount = 30; // 点の量を減らす
+const particleSpeed = 1; // 動きを少し遅くする
 
-window.addEventListener('resize', () => {
-  width = window.innerWidth;
-  height = window.innerHeight;
-  canvas.width = width;
-  canvas.height = height;
-});
+function init() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  particles = [];
 
-window.addEventListener('mousemove', (event) => {
-  mouse.x = event.clientX;
-  mouse.y = event.clientY;
-});
-
-const particles = [];
-const particleCount = 100;
-
-for (let i = 0; i < particleCount; i++) {
-  particles.push({
-    x: Math.random() * width,
-    y: Math.random() * height,
-    r: Math.random() * 1.5 + 0.5,
-    color: `hsla(${200 + Math.random() * 60}, 100%, 70%, ${Math.random()})`,
-    vx: (Math.random() - 0.5) * 0.5,
-    vy: (Math.random() - 0.5) * 0.5
-  });
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
 }
 
-function animateParticles() {
-  ctx.clearRect(0, 0, width, height);
-  for (const p of particles) {
-    // Move particle
-    p.x += p.vx;
-    p.y += p.vy;
+class Particle {
+  constructor() {
+    this.reset();
+  }
 
-    // Bounce off edges
-    if (p.x < 0 || p.x > width) p.vx *= -1;
-    if (p.y < 0 || p.y > height) p.vy *= -1;
+  reset() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.vx = (Math.random() - 0.5) * particleSpeed;
+    this.vy = (Math.random() - 0.5) * particleSpeed;
+    this.life = 0;
+    this.maxLife = anime.random(50, 150);
+    this.color = '#fff';
+  }
 
-    // Draw particle
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = p.color;
-    ctx.fill();
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.life++;
 
-    // Draw line to nearby particles
-    for (const p2 of particles) {
-      const distance = Math.sqrt((p.x - p2.x) ** 2 + (p.y - p2.y) ** 2);
-      if (distance < 100) {
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p2.x, p2.y);
-        ctx.strokeStyle = `hsla(220, 100%, 80%, ${1 - distance / 100})`;
-        ctx.lineWidth = 0.2;
-        ctx.stroke();
-      }
-    }
-    
-    // Draw line to mouse
-    const mouseDistance = Math.sqrt((p.x - mouse.x) ** 2 + (p.y - mouse.y) ** 2);
-    if (mouseDistance < 200) {
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
-      ctx.lineTo(mouse.x, mouse.y);
-      ctx.strokeStyle = `hsla(0, 100%, 100%, ${0.5 - mouseDistance / 200})`;
-      ctx.lineWidth = 0.3;
-      ctx.stroke();
+    if (this.x > width || this.x < 0 || this.y > height || this.y < 0 || this.life > this.maxLife) {
+      this.reset();
     }
   }
-  requestAnimationFrame(animateParticles);
+
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, 1.5, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
 }
 
-animateParticles();
+function animate() {
+  // Clear the canvas completely in each frame
+  ctx.clearRect(0, 0, width, height);
+
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  requestAnimationFrame(animate);
+}
+
+// Initialize and start animation
+init();
+animate();
+
+window.addEventListener('resize', init);
+
+
+// --- Back to Top Button ---
+
+const backToTopButton = document.querySelector('.back-to-top');
+
+function toggleBackToTopButton() {
+  if (window.scrollY > 300) {
+    backToTopButton.classList.add('visible');
+  } else {
+    backToTopButton.classList.remove('visible');
+  }
+}
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+window.addEventListener('scroll', toggleBackToTopButton);
+backToTopButton.addEventListener('click', scrollToTop);

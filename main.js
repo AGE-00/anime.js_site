@@ -4,23 +4,31 @@ import anime from 'animejs';
 const textWrapper = document.querySelector('.title');
 textWrapper.innerHTML = textWrapper.textContent.replace(/\S/g, "<span class='letter'>$&</span>");
 
-anime.timeline({loop: true})
-  .add({
-    targets: '.title .letter',
-    translateX: [40,0],
-    translateZ: 0,
-    opacity: [0,1],
-    easing: "easeOutExpo",
-    duration: 1200,
-    delay: (el, i) => 500 + 30 * i
-  }).add({
-    targets: '.title .letter',
-    translateX: [0,-30],
-    opacity: [1,0],
-    easing: "easeInExpo",
-    duration: 1100,
-    delay: (el, i) => 100 + 30 * i
+const letters = document.querySelectorAll('.title .letter');
+
+document.addEventListener('mousemove', (e) => {
+  letters.forEach((letter) => {
+    const rect = letter.getBoundingClientRect();
+    const letterX = rect.left + rect.width / 2;
+    const letterY = rect.top + rect.height / 2;
+
+    const distance = Math.sqrt(
+      Math.pow(e.clientX - letterX, 2) + Math.pow(e.clientY - letterY, 2)
+    );
+
+    const maxDistance = 150; // マウスからの影響範囲
+    const intensity = Math.max(0, 1 - distance / maxDistance);
+
+    anime({
+      targets: letter,
+      color: intensity > 0.1 ? '#fff' : 'transparent',
+      textShadow: intensity > 0.1 ? `0 0 ${intensity * 15}px #fff, 0 0 ${intensity * 30}px #0ff` : 'none',
+      scale: 1 + intensity * 0.2,
+      duration: 200,
+      easing: 'easeOutQuad',
+    });
   });
+});
 
 // Background animation
 const canvas = document.getElementById('bg-canvas');

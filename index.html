@@ -1,72 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Animation JS</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <header class="header">
-    <div class="logo">Animation JS</div>
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#documentation">Docs</a>
-      <a href="https://github.com/AGE-00/animation" target="_blank" rel="noopener noreferrer">GitHub</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-background">
-        <canvas id="particle-canvas"></canvas>
-      </div>
-      <div class="hero-content">
-        <h1>All-in-one<br>animation<br>engine.</h1>
-        <p>A fast and versatile JavaScript library to animate the web.</p>
-        <div class="cta-button">Learn more</div>
-      </div>
-    </section>
-
-    <section id="features" class="features">
-      <h2>The complete animator's toolbox</h2>
-      <div class="features-grid">
-        <div class="feature-item">
-          <h3>Intuitive API</h3>
-          <p>Animate faster with an easy-to-use, yet powerful animation API.</p>
-        </div>
-        <div class="feature-item">
-          <h3>Enhanced transforms</h3>
-          <p>Smoothly blend individual CSS transform properties.</p>
-        </div>
-        <div class="feature-item">
-          <h3>SVG toolset</h3>
-          <p>Morph shapes, follow motion paths, and draw lines easily.</p>
-        </div>
-        <div class="feature-item">
-          <h3>Scroll Observer</h3>
-          <p>Synchronise and trigger animations on scroll.</p>
-        </div>
-        <div class="feature-item">
-          <h3>Advanced staggering</h3>
-          <p>Create stunning effects in seconds with the built-in Stagger utility.</p>
-        </div>
-        <div class="feature-item">
-          <h3>Springs and draggable</h3>
-          <p>Drag, snap, flick and throw HTML elements.</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p>&copy; 2025 Animation JS. Inspired by Anime.js.</p>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script type="module" src="/main.js"></script>
-
-  <button class="back-to-top" title="Back to top">&uarr;</button>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation JS</title>
+    <meta name="description" content="All-in-one animation engine demo" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

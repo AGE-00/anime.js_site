@@ -1,40 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import BackgroundCanvas from './components/BackgroundCanvas.jsx'
-import AnimatedTitle from './components/AnimatedTitle.jsx'
+import './App.css';
+import '../style.css';
+import BackgroundCanvas from './components/BackgroundCanvas.jsx';
+import AnimatedTitle from './components/AnimatedTitle.jsx';
+import Header from './components/Header.jsx';
+
+import Hero from './components/Hero.jsx';
+import Features from './components/Features.jsx';
+import Footer from './components/Footer.jsx';
+import BackToTop from './components/BackToTop.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <BackgroundCanvas />
-      <div className="app-content">
-        <div>
-          <a href="https://vite.dev" target="_blank">
-            <img src={viteLogo} className="logo" alt="Vite logo" />
-          </a>
-            <a href="https://react.dev" target="_blank">
-              <img src={reactLogo} className="logo react" alt="React logo" />
-            </a>
-        </div>
-  <AnimatedTitle text="Vite + React" />
-        <div className="card">
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is {count}
-          </button>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test HMR
-          </p>
-        </div>
-        <p className="read-the-docs">
-          Click on the Vite and React logos to learn more
-        </p>
-      </div>
+      <Header />
+      <main>
+        <Hero>
+          <AnimatedTitle text="All-in-one animation engine." />
+          <p className="hero-tagline">A fast and versatile JavaScript library to animate the web.</p>
+          <div className="cta-button">Learn more</div>
+        </Hero>
+        <Features />
+      </main>
+      <Footer />
+      <BackToTop />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

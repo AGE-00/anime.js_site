@@ -43,6 +43,7 @@ export default function BackgroundCanvas() {
   const particlesRef = useRef([]);
   const hueRef = useRef(CONFIG.hueStart);
   const lastBurstRef = useRef(performance.now());
+  const rippleActiveRef = useRef(false); // 同時多発防止
 
   // Resize & density calc
   const resize = () => {
@@ -69,14 +70,15 @@ export default function BackgroundCanvas() {
     const ctx = canvas.getContext('2d');
     resize();
 
-    // Hue animation
+    // Hue animation (オブジェクトプロパティで明示的に管理)
+    const hueObj = { h: CONFIG.hueStart };
     const hueAnim = anime({
-      targets: hueRef.current,
-      value: CONFIG.hueStart + CONFIG.hueRange,
+      targets: hueObj,
+      h: CONFIG.hueStart + CONFIG.hueRange,
       duration: 18000,
       easing: 'linear',
       loop: true,
-      update: a => { hueRef.current = CONFIG.hueStart + (a.progress / 100) * CONFIG.hueRange; }
+      update: () => { hueRef.current = hueObj.h; }
     });
 
     const render = () => {
@@ -103,23 +105,25 @@ export default function BackgroundCanvas() {
       }
 
       // Burst ripple
-      if (t - lastBurstRef.current > CONFIG.burstEveryMs) {
+      if (t - lastBurstRef.current > CONFIG.burstEveryMs && !rippleActiveRef.current) {
         lastBurstRef.current = t;
-        const cx = canvas.width * Math.random();
-        const cy = canvas.height * Math.random();
+        rippleActiveRef.current = true;
+        const cx = canvas.width * (0.2 + Math.random() * 0.6); // 端を避ける
+        const cy = canvas.height * (0.2 + Math.random() * 0.6);
         const ripple = { r: 0, max: Math.min(canvas.width, canvas.height) * (0.25 + Math.random() * 0.25) };
         anime({
           targets: ripple,
-            r: ripple.max,
-            duration: 1800,
-            easing: 'easeOutCubic',
-            update: () => {
-              ctx.beginPath();
-              ctx.strokeStyle = `hsla(${hue},80%,60%,${1 - ripple.r / ripple.max})`;
-              ctx.lineWidth = 2 * dpr;
-              ctx.arc(cx, cy, ripple.r, 0, Math.PI * 2);
-              ctx.stroke();
-            }
+          r: ripple.max,
+          duration: 1800,
+          easing: 'easeOutCubic',
+          update: () => {
+            ctx.beginPath();
+            ctx.strokeStyle = `hsla(${hue},80%,60%,${1 - ripple.r / ripple.max})`;
+            ctx.lineWidth = 2 * dpr;
+            ctx.arc(cx, cy, ripple.r, 0, Math.PI * 2);
+            ctx.stroke();
+          },
+          complete: () => { rippleActiveRef.current = false; }
         });
       }
 

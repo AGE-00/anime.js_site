@@ -1,5 +1,4 @@
 import './App.css';
-import '../style.css';
 import BackgroundCanvas from './components/BackgroundCanvas.jsx';
 import AnimatedTitle from './components/AnimatedTitle.jsx';
 import Header from './components/Header.jsx';

@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import ThemeToggle from './ThemeToggle';
 
-export default function Header() {
+export default function Header({ isDark, toggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -31,6 +32,7 @@ export default function Header() {
           rel="noopener noreferrer"
           onClick={() => setMenuOpen(false)}
         >GitHub</a>
+        <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
       </nav>
     </header>
   );

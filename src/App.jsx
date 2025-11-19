@@ -17,7 +17,7 @@ function App() {
         <Hero>
           <AnimatedTitle text="All-in-one animation engine." />
           <p className="hero-tagline">A fast and versatile JavaScript library to animate the web.</p>
-          <div className="cta-button">Learn more</div>
+          <button className="cta-button">Learn more</button>
         </Hero>
         <Features />
       </main>

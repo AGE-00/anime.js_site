@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import anime from 'animejs';
+import { animate, createTimeline, stagger } from 'animejs';
 import './AnimatedTitle.css';
 
 // Props: text, audioReactive (boolean - default prop, now controlled by user toggle)
@@ -15,13 +15,13 @@ export default function AnimatedTitle({ text = '', audioReactive = true }) {
     const letters = el.querySelectorAll('.at-letter');
 
     // Intro timeline for entrance animation
-    const tl = anime.timeline({ easing: 'easeOutExpo' });
+    const tl = createTimeline({ easing: 'easeOutExpo' });
     tl
       .add({
         targets: letters,
         translateY: [40, 0],
         opacity: [0, 1],
-        delay: anime.stagger(45),
+        delay: stagger(45),
         duration: 850,
       })
       .add(
@@ -29,20 +29,20 @@ export default function AnimatedTitle({ text = '', audioReactive = true }) {
           targets: letters,
           rotateZ: [0, 360],
           scale: [1, 0.92, 1],
-          delay: anime.stagger(15),
+          delay: stagger(15),
           duration: 1400,
         },
         '-=300',
       );
 
     // Subtle perpetual pulse
-    anime({
+    animate({
       targets: letters,
       scale: [1, 1.05],
       easing: 'easeInOutSine',
       direction: 'alternate',
       loop: true,
-      delay: anime.stagger(120, { start: 2000 }),
+      delay: stagger(120, { start: 2000 }),
       duration: 2600,
     });
 

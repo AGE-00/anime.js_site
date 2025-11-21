@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import anime from 'animejs';
+import { animate } from 'animejs';
 
 export default function Playground() {
     const boxRef = useRef(null);
@@ -11,17 +11,13 @@ export default function Playground() {
     });
 
     const handlePlay = () => {
-        // Reset first to allow re-playing from initial state or just animate from current?
-        // anime.js handles from current state well.
-        // Let's animate to the target values.
-
-        anime({
+        animate({
             targets: boxRef.current,
-            scale: [1, params.scale], // From 1 to target
-            rotate: [0, params.rotate], // From 0 to target
+            scale: [1, params.scale],
+            rotate: [0, params.rotate],
             duration: params.duration,
             easing: params.easing,
-            direction: 'alternate', // Auto reverse to make it repeatable easily
+            direction: 'alternate',
             loop: 1
         });
     };

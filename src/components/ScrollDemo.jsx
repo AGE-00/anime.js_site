@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import anime from 'animejs';
+import { animate, stagger } from 'animejs';
 
 export default function ScrollDemo() {
     const sectionRef = useRef(null);
@@ -10,13 +10,13 @@ export default function ScrollDemo() {
             (entries) => {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        anime({
+                        animate({
                             targets: entry.target,
                             translateY: [100, 0],
                             opacity: [0, 1],
                             easing: 'easeOutExpo',
                             duration: 1200,
-                            delay: anime.stagger(100) // This won't stagger across multiple entries if they trigger separately, but works if multiple enter at once
+                            delay: stagger(100)
                         });
                         observer.unobserve(entry.target);
                     }

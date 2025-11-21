@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import anime from 'animejs';
+import { animate } from 'animejs';
 
 export default function ThemeToggle({ isDark, toggleTheme }) {
     const handleClick = () => {
         toggleTheme();
         // Simple rotation animation on click
-        anime({
+        animate({
             targets: '.theme-toggle-icon',
             rotate: '+=360deg',
             duration: 500,

@@ -1,25 +1,25 @@
 import { useEffect, useRef } from 'react';
-import anime from 'animejs';
+import { animate, stagger } from 'animejs';
 
 const StaggerDemo = () => {
     const gridRef = useRef(null);
 
-    const animate = () => {
-        anime({
+    const animateGrid = () => {
+        animate({
             targets: gridRef.current.children,
             scale: [
                 { value: .1, easing: 'easeOutSine', duration: 500 },
                 { value: 1, easing: 'easeInOutQuad', duration: 1200 }
             ],
-            delay: anime.stagger(200, { grid: [5, 5], from: 'center' })
+            delay: stagger(200, { grid: [5, 5], from: 'center' })
         });
     };
 
     return (
         <div
             className="demo-card"
-            onMouseEnter={animate}
-            onClick={animate}
+            onMouseEnter={animateGrid}
+            onClick={animateGrid}
         >
             <h3>Staggering</h3>
             <div ref={gridRef} style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '5px', width: '150px', height: '150px', margin: '20px auto' }}>
@@ -35,8 +35,8 @@ const StaggerDemo = () => {
 const MorphDemo = () => {
     const shapeRef = useRef(null);
 
-    const animate = () => {
-        anime({
+    const animateShape = () => {
+        animate({
             targets: shapeRef.current,
             borderRadius: ['0%', '50%'],
             rotate: '1turn',
@@ -50,8 +50,8 @@ const MorphDemo = () => {
     return (
         <div
             className="demo-card"
-            onMouseEnter={animate}
-            onClick={animate}
+            onMouseEnter={animateShape}
+            onClick={animateShape}
         >
             <h3>Morph & Rotate</h3>
             <div style={{ height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '20px auto' }}>
@@ -68,9 +68,8 @@ const MorphDemo = () => {
 const PathDemo = () => {
     const ballRef = useRef(null);
 
-    const animate = () => {
-        // Simple translation demo since SVG path data needs more setup
-        anime({
+    const animateBall = () => {
+        animate({
             targets: ballRef.current,
             translateX: 100,
             translateY: [
@@ -86,8 +85,8 @@ const PathDemo = () => {
     return (
         <div
             className="demo-card"
-            onMouseEnter={animate}
-            onClick={animate}
+            onMouseEnter={animateBall}
+            onClick={animateBall}
         >
             <h3>Motion & Bounce</h3>
             <div style={{ height: '150px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', paddingLeft: '40px', margin: '20px auto' }}>

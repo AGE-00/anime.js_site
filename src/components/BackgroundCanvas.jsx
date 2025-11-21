@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import anime from 'animejs';
+import { animate } from 'animejs';
 
 /*
   Advanced particle background using anime.js timelines + manual canvas rendering.
@@ -72,7 +72,7 @@ export default function BackgroundCanvas() {
 
     // Hue animation (オブジェクトプロパティで明示的に管理)
     const hueObj = { h: CONFIG.hueStart };
-    const hueAnim = anime({
+    const hueAnim = animate({
       targets: hueObj,
       h: CONFIG.hueStart + CONFIG.hueRange,
       duration: 18000,
@@ -82,8 +82,8 @@ export default function BackgroundCanvas() {
     });
 
     const render = () => {
-  const g = typeof globalThis !== 'undefined' ? globalThis : {};
-  const dpr = g.devicePixelRatio || 1;
+      const g = typeof globalThis !== 'undefined' ? globalThis : {};
+      const dpr = g.devicePixelRatio || 1;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const t = performance.now();
       const hue = hueRef.current;
@@ -111,7 +111,7 @@ export default function BackgroundCanvas() {
         const cx = canvas.width * (0.2 + Math.random() * 0.6); // 端を避ける
         const cy = canvas.height * (0.2 + Math.random() * 0.6);
         const ripple = { r: 0, max: Math.min(canvas.width, canvas.height) * (0.25 + Math.random() * 0.25) };
-        anime({
+        animate({
           targets: ripple,
           r: ripple.max,
           duration: 1800,
